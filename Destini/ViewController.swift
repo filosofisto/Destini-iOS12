@@ -33,18 +33,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var topButton: UIButton!         // Has TAG = 1
     @IBOutlet weak var bottomButton: UIButton!      // Has TAG = 2
     @IBOutlet weak var storyTextView: UILabel!
+    @IBOutlet weak var buttonRestart: UIButton!
     
     // TODO Step 5: Initialise instance variables here
-    
-    
-    
+    var storyIndex: Int = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // TODO Step 3: Set the text for the storyTextView, topButton, bottomButton, and to T1_Story, T1_Ans1, and T1_Ans2
-        
+        updateUI(story: story1, answerTop: answer1a, answerBotton: answer1b)
     }
 
     
@@ -52,13 +50,70 @@ class ViewController: UIViewController {
     @IBAction func buttonPressed(_ sender: UIButton) {
     
         // TODO Step 4: Write an IF-Statement to update the views
-                
+        if isStory(1) {
+            if isButtonTop(sender) {
+                storyIndex = 3
+                updateUI(story: story3, answerTop: answer3a, answerBotton: answer3b)
+            } else {
+                storyIndex = 2
+                updateUI(story: story2, answerTop: answer2a, answerBotton: answer2b)
+            }
+            return
+        }
+        
+        if isStory(2) {
+            if isButtonTop(sender) {
+                storyIndex = 3
+                updateUI(story: story3, answerTop: answer3a, answerBotton: answer3b)
+            } else {
+                storyIndex = 4
+                updateUI(story: story4, answerTop: answer2a, answerBotton: answer2b)
+            }
+            return
+        }
+        
+        if isStory(3) {
+            if isButtonTop(sender) {
+                storyIndex = 6
+                updateUI(story: story6, answerTop: "", answerBotton: "")
+            } else {
+                storyIndex = 5
+                updateUI(story: story5, answerTop: "", answerBotton: "")
+            }
+        }
         // TODO Step 6: Modify the IF-Statement to complete the story
         
     
     }
     
-
+    private func updateUI(story: String, answerTop: String, answerBotton: String) {
+        storyTextView.text = story
+        topButton.setTitle(answerTop, for: .normal)
+        bottomButton.setTitle(answerBotton, for: .normal)
+        
+        let finished = isFinished()
+        
+        topButton.isHidden = finished
+        bottomButton.isHidden = finished
+        buttonRestart.isHidden = !finished
+    }
+    
+    private func isFinished() -> Bool {
+        return storyIndex == 4 || storyIndex == 5 || storyIndex == 6
+    }
+    
+    private func isStory(_ story: Int) -> Bool {
+        return storyIndex == story
+    }
+    
+    @IBAction func restartPressed(_ sender: UIButton) {
+        storyIndex = 1
+        updateUI(story: story1, answerTop: answer1a, answerBotton: answer1b)
+    }
+    
+    private func isButtonTop(_ sender: UIButton) -> Bool {
+        return sender.tag == 1
+    }
 
 
 }
